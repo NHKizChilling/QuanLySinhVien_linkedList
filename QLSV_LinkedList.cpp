@@ -57,38 +57,150 @@ NODE *TimSV(LIST L, char MSSV[]);
 void Swap(SINHVIEN &sv1, SINHVIEN &sv2);
 void SapXepTheoTen(LIST &L);
 
+int menu() {
+	int choice;
+	do {
+		printf("\nChuong trinh quan ly sinh vien\n");
+		printf("1. Nhap danh sach sinh vien\n");
+		printf("2. Xuat danh sach sinh vien\n");
+		printf("3. Them sinh vien\n");
+		printf("4. Cap nhat sinh vien\n");
+		printf("5. Tim sinh vien\n");
+		printf("6. Xoa sinh vien\n");
+		printf("7. Sap xep sinh vien\n");
+		printf("8. Thong ke so luong sinh vien theo gioi tinh\n");
+		printf("9. Thong ke so luong sinh vien theo diem trung binh\n");
+		printf("10. Ghi danh sach sinh vien vao file\n");
+		printf("11. Doc danh sach sinh vien trong file ra mang\n");
+		printf("12. Thoat chuong trinh\n");
+		for(int i = 0; i < 108; i++) {
+			printf("=");
+		}
+		printf("\nNhap lua chon cua ban: ");
+		scanf("%d", &choice);
+		if(choice < 1 || choice > 12) {
+			printf("Lua chon khong hop le. Vui long nhap lai!\n");
+		} 
+	} while(choice < 1 || choice > 12);
+
+	if(choice == 12) {
+		printf("Chuong trinh ket thuc\n");
+		exit(0);
+	}
+	return choice;
+}
+
 //Main
 int main(){
 	LIST L;
 	NODE *p;
 	SINHVIEN SV;
 	int n;
-	char MSSV[10], masv[10];
+	char MSSV[10], masv[10], MaSV[10];
 	KhoiTao(L);
-	NhapDanhSach(L);
-	ThemSV(L);
-	XuatDanhSach(L);
-	fflush(stdin);
-	printf("Nhap MSSV cua sinh vien can xoa: ");gets(MSSV);
-	int x = XoaSV(L, MSSV);
-	if(x == 1)
-		printf("Xoa thanh cong sinh vien co ma so %s", MSSV);
-	else
-		printf("Khong tim thay sinh vien co ma so %s", MSSV);
-	//XuatDanhSach(L, n);
-	LietKeSV(L);
-	int k = DemSLNam(L);
-	printf("\nSo luong sinh vien nam la: %d", k);
-	printf("\nNhap MSSV can sua diem: ");gets(masv);
-	int l = CapNhatDiemTB(L, masv);
-	if(l == 0){
-		printf("Sua thanh cong!\n");
-		XuatDanhSach(L);
+	while(true) {
+		switch (menu()) {
+			case 1:
+				system("cls");
+				NhapDanhSach(L);
+				SapXepTheoTen(L);
+				break;
+			
+			case 2:
+				system("cls");
+				XuatDanhSach(L);
+				break;
+
+			case 3:
+				system("cls");
+				ThemSV(L);
+				SapXepTheoTen(L);
+				break;
+
+			case 4:
+				system("cls");
+				printf("Nhap ma so sinh vien can cap nhat: ");
+				fflush(stdin);
+				gets(MaSV);
+				//CapNhatSV(dssv, n, MaSV);
+				SapXepTheoTen(L);
+				break;
+			
+			case 5: {
+				system("cls");
+				printf("Nhap ma so sinh vien can tim: ");
+				fflush(stdin);
+				gets(MaSV);
+				NODE* SV = TimSV(L, MaSV);
+				if(SV == NULL) {
+					printf("Khong tim thay sinh vien co ma so %s\n", MaSV);
+				} else {
+					printf("Thong tin sinh vien co ma so %s\n", MaSV);
+					for(int j=0;j<119;j++)
+						printf("=");
+					printf("\n|%5s|%-10s|%-30s|%-10s|%10s|%-20s|%15s|%-10s|\n","STT","MSSV",
+					"HO TEN","GIOI TINH","NGAY SINH","DIA CHI","DIEM TRUNG BINH","XEP LOAI");
+					for(int j=0;j<119;j++)
+						printf("-");
+					printf("\n"); 
+					printf("|%5d|", 1);
+					Xuat1SV(SV->sv);
+				}
+				break;
+			}
+			case 6:
+				system("cls");
+				printf("Nhap ma so sinh vien can xoa: ");
+				fflush(stdin);
+				gets(MaSV);
+				XoaSV(L, MaSV);
+				SapXepTheoTen(L);
+				break;
+
+			case 7: {
+				system("cls");
+				printf("1. Sap xep theo ho ten\n");
+				printf("2. Sap xep theo diem trung binh\n");
+				int choice;
+				do {
+					printf("Nhap lua chon cua ban: ");
+					scanf("%d", &choice);
+					if(choice < 1 || choice > 2) {
+						printf("Lua chon khong hop le. Vui long nhap lai!\n");
+					} 
+				} while(choice < 1 || choice > 2);
+				if(choice == 1) {
+					SapXepTheoTen(L);
+				} else {
+					SapTheoDTBtang(L);
+				}
+				break;
+			}
+			case 8:
+				system("cls");
+				//ThongKeTheoGioiTinh(dssv, n);
+				break;
+
+			case 9:
+				system("cls");
+				//ThongKeTheoDTB(dssv, n);
+				break;
+			
+			case 10:
+				system("cls");
+				fflush(stdin);
+				//printf("Nhap ten file dung de luu danh sach sinh vien: ");gets(filename);
+				//GhiDanhSachVaoFile(dssv, n, filename);
+				break;
+			case 11:
+				system("cls");
+				fflush(stdin);
+				//printf("Nhap ten file dung de xuat danh sach sinh vien: ");gets(filename);
+				//DocFileRaMang(ds, m, filename);
+			//	XuatDSSV(ds,m);
+				break;
+		}
 	}
-	else
-		printf("Khong tim thay sinh vien co ma so %s!\n", masv);
-	SapTheoDTBtang(L);
-	XuatDanhSach(L);
 }
 
 //Nhap thong tin 1 sinh vien
