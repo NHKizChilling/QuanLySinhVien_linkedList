@@ -55,6 +55,7 @@ void LietKeSV(LIST L);							//Liet ke cac sinh vien co diem trung binh >=5
 int DemSLNam(LIST L);							//Dem so luong sinh vien nam
 int CapNhatDiemTB(LIST L, char MSSV[]);			//Cap nhat diem trung binh cua mot sinh vien thong qua MSSV
 void XepLoai(SINHVIEN &sv);
+NODE *timSV(LIST L, char MSSV[]);
 
 //Main
 int main(){
@@ -378,4 +379,13 @@ void XepLoai(SINHVIEN &sv) {
 }
 
 
-
+NODE *timSV(LIST L, char MSSV[]) {
+  NODE *p = L.pHead;
+  while(p != NULL) {
+    if(strcmp(p->sv.MSSV, MSSV) == 0) {
+      return p;
+    }
+    p = p->pNext;
+  }
+  return NULL;
+}
