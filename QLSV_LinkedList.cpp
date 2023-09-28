@@ -56,6 +56,8 @@ int DemSLNam(LIST L);							//Dem so luong sinh vien nam
 int CapNhatDiemTB(LIST L, char MSSV[]);			//Cap nhat diem trung binh cua mot sinh vien thong qua MSSV
 void XepLoai(SINHVIEN &sv);
 NODE *timSV(LIST L, char MSSV[]);
+void swap(SINHVIEN &sv1, SINHVIEN &sv2);
+void sapXepTheoTen(LIST &L);
 
 //Main
 int main(){
@@ -388,4 +390,27 @@ NODE *timSV(LIST L, char MSSV[]) {
     p = p->pNext;
   }
   return NULL;
+}
+
+void swap(SINHVIEN &sv1, SINHVIEN &sv2) {
+  SINHVIEN temp = sv1;
+  sv1 = sv2;
+  sv2 = temp;
+}
+
+void sapXepTheoTen(LIST &L) {
+	  NODE *p = L.pHead;
+	NODE *q = NULL;
+	if(p == NULL){
+		printf("Mang khong co sinh vien nao.\n");
+		exit(0);
+	}
+	while(p != NULL){
+		for(NODE *P = p->pNext;P!= NULL; P = P->pNext){
+			if(strcmp(p->sv.hoten, P->sv.hoten) > 0){
+				swap(p->sv, P->sv);
+			}
+		}
+		p = p->pNext;
+	}
 }
