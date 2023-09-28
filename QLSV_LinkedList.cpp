@@ -399,7 +399,7 @@ void swap(SINHVIEN &sv1, SINHVIEN &sv2) {
 }
 
 void sapXepTheoTen(LIST &L) {
-	  NODE *p = L.pHead;
+	NODE *p = L.pHead;
 	NODE *q = NULL;
 	if(p == NULL){
 		printf("Mang khong co sinh vien nao.\n");
