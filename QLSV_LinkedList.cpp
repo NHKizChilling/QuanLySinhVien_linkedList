@@ -18,21 +18,19 @@ typedef struct date{
 }DATE; 
 
 //Cau truc thong tin sinh vien
-struct ttsinhvien{
+typedef struct ttsinhvien{
 	char MSSV[10], hoten[30];
 	int gioitinh; //1: nu, 0: nam
 	DATE ngaysinh; 
 	char diachi[50];
 	float dtb;
 	char xeploai[10]; 
-};
-typedef struct ttsinhvien SINHVIEN;
+}SINHVIEN;
 
-struct node{
+typedef struct node{
 	SINHVIEN sv;
 	node *pNext;
-};
-typedef struct node NODE;
+}NODE;
 
 typedef struct lsv{
 	NODE *pHead, *pTail;
@@ -55,9 +53,9 @@ void LietKeSV(LIST L);							//Liet ke cac sinh vien co diem trung binh >=5
 int DemSLNam(LIST L);							//Dem so luong sinh vien nam
 int CapNhatDiemTB(LIST L, char MSSV[]);			//Cap nhat diem trung binh cua mot sinh vien thong qua MSSV
 void XepLoai(SINHVIEN &sv);
-NODE *timSV(LIST L, char MSSV[]);
-void swap(SINHVIEN &sv1, SINHVIEN &sv2);
-void sapXepTheoTen(LIST &L);
+NODE *TimSV(LIST L, char MSSV[]);
+void Swap(SINHVIEN &sv1, SINHVIEN &sv2);
+void SapXepTheoTen(LIST &L);
 
 //Main
 int main(){
@@ -66,6 +64,7 @@ int main(){
 	SINHVIEN SV;
 	int n;
 	char MSSV[10], masv[10];
+	KhoiTao(L);
 	NhapDanhSach(L);
 	ThemSV(L);
 	XuatDanhSach(L);
@@ -117,6 +116,10 @@ void Nhap1SV(SINHVIEN &sv){
 }
 
 bool KiemTraNgaySinh(SINHVIEN sv){
+	if(sv.ngaysinh.ngay == NULL || sv.ngaysinh.thang == NULL || sv.ngaysinh.nam == NULL){
+		printf("=>Ngay, thang hoac nam khong duoc de trong! Nhap lai.\n"); 
+		return false;
+	}
 	if(sv.ngaysinh.thang < 1||sv.ngaysinh.thang > 12){
 		printf("=>Thang khong hop le vui long nhap lai.\n");
 		return false;
@@ -198,8 +201,12 @@ void NhapDanhSach(LIST &L){
 			printf("So luong sinh vien phai lon hon 0. Vui long nhap lai!\n");
 	}while(n <= 0);
 	int i=0;
-	while(i<n-1){
-		Nhap1SV(SV);
+	while(i < n){
+		do{
+			Nhap1SV(SV);
+			if(TimSV(L,SV.MSSV) != NULL)
+				printf("Ma sinh vien da ton tai. Vui long nhap lai!\n"); 
+		}while(TimSV(L,SV.MSSV) != NULL);
 		p = TaoSV(SV);
 		ThemCuoi(L,p);
 		i++;
@@ -210,7 +217,11 @@ void NhapDanhSach(LIST &L){
 void ThemSV(LIST &L){
 	SINHVIEN SV;
 	NODE *p;
-	Nhap1SV(SV);
+	do{
+		Nhap1SV(SV);
+		if(TimSV(L,SV.MSSV) != NULL)
+			printf("Ma sinh vien da ton tai. Vui long nhap lai!\n"); 
+	}while(TimSV(L,SV.MSSV) != NULL); 
 	p = TaoSV(SV);
 	ThemCuoi(L, p);
 }
@@ -381,7 +392,7 @@ void XepLoai(SINHVIEN &sv) {
 }
 
 
-NODE *timSV(LIST L, char MSSV[]) {
+NODE *TimSV(LIST L, char MSSV[]) {
   NODE *p = L.pHead;
   while(p != NULL) {
     if(strcmp(p->sv.MSSV, MSSV) == 0) {
@@ -392,13 +403,13 @@ NODE *timSV(LIST L, char MSSV[]) {
   return NULL;
 }
 
-void swap(SINHVIEN &sv1, SINHVIEN &sv2) {
+void Swap(SINHVIEN &sv1, SINHVIEN &sv2) {
   SINHVIEN temp = sv1;
   sv1 = sv2;
   sv2 = temp;
 }
 
-void sapXepTheoTen(LIST &L) {
+void SapXepTheoTen(LIST &L) {
 	NODE *p = L.pHead;
 	NODE *q = NULL;
 	if(p == NULL){
@@ -408,7 +419,7 @@ void sapXepTheoTen(LIST &L) {
 	while(p != NULL){
 		for(NODE *P = p->pNext;P!= NULL; P = P->pNext){
 			if(strcmp(p->sv.hoten, P->sv.hoten) > 0){
-				swap(p->sv, P->sv);
+				Swap(p->sv, P->sv);
 			}
 		}
 		p = p->pNext;
