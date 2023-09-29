@@ -71,18 +71,16 @@ int menu() {
 		printf("7. Sap xep sinh vien\n");
 		printf("8. Thong ke so luong sinh vien theo gioi tinh\n");
 		printf("9. Thong ke so luong sinh vien theo diem trung binh\n");
-		printf("10. Ghi danh sach sinh vien vao file\n");
-		printf("11. Doc danh sach sinh vien trong file ra mang\n");
 		printf("0. Thoat chuong trinh\n");
 		for(int i = 0; i < 108; i++) {
 			printf("=");
 		}
 		printf("\nNhap lua chon cua ban: ");
 		scanf("%d", &choice);
-		if(choice < 0 || choice > 11) {
+		if(choice < 0 || choice > 9) {
 			printf("Lua chon khong hop le. Vui long nhap lai!\n");
 		} 
-	} while(choice < 0 || choice > 12);
+	} while(choice < 0 || choice > 9);
 
 	if(choice == 0) {
 		printf("Chuong trinh ket thuc\n");
@@ -202,20 +200,6 @@ int main(){
 				Xuat1SV(dtbmax->sv);
 				break;
 			}
-			case 10:
-				system("cls");
-				fflush(stdin);
-				printf("Nhap ten file dung de luu danh sach sinh vien: ");gets(filename);
-				GhiDanhSachVaoFile(L, filename);
-				break;
-			case 11:
-				system("cls");
-				fflush(stdin);
-				LIST L1;
-				printf("Nhap ten file dung de xuat danh sach sinh vien: ");gets(filename);
-				DocFileRaMang(L1, filename);
-				XuatDanhSach(L1);
-				break;
 		}
 	}
 }
