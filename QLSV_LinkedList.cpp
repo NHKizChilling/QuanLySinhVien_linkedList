@@ -57,8 +57,6 @@ NODE *TimSV(LIST L, char MSSV[]);				//Tra ve sinh vien can tim theo ma so cho t
 void Swap(SINHVIEN &sv1, SINHVIEN &sv2);		//Hoan doi vi tri cua 2 sinh vien trong danh sach
 char get1stLetterOfName(SINHVIEN sv);			//Lay ki tu dau tien cua ten sinh vien
 void SapXepTheoTen(LIST &L);					//Sap xep danh sach sinh vien theo ten
-void GhiDanhSachVaoFile(LIST L, char filename[]);		//Ghi danh sach sinh vien va file
-void DocFileRaMang(LIST &L1, char filename[]);			//Doc thong tin sinh vien tu file ra mang
 
 int menu() {
 	int choice;
