@@ -455,7 +455,6 @@ void XuatDanhSach(LIST L){
 		p = p->pNext;
 		i++;
 	}
-
 }
 
 /*
@@ -551,7 +550,9 @@ void LietKeSV(LIST L){
 		exit(0);
 	}
 	printf("\n\t-------DANH SACH CAC SINH VIEN CO DIEM TRUNG BINH TU 5 TRO LEN-------\n");
-	printf("|%5s|%-10s|%-20s|%-10s|%10s|%-20s|%15s|%10s|\n", "STT", "MSSV", "Ho Ten", "Gioi Tinh", "Ngay Sinh", "Dia Chi", "Diem Trung Binh", "Xep Loai");
+	printf("|%5s|%-10s|%-20s|%-10s|%10s|%-20s|%15s|%10s|\n", 
+			"STT", "MSSV", "Ho Ten", "Gioi Tinh", "Ngay Sinh", 
+			"Dia Chi", "Diem Trung Binh", "Xep Loai");
 	int i = 1;
 	while(p != NULL){
 		if(p->sv.dtb >= 5){
@@ -760,47 +761,4 @@ void SapXepTheoTen(LIST &L) {
 		}
 		p = p->pNext;
 	}
-}
-
-/*
-	Description: Ghi danh sach sinh vien vao file
-	Author: Nguyen Vo Hiep
-	Date: 29/09/2023
-*/
-void GhiDanhSachVaoFile(LIST L, char filename[]){
-	FILE *f;
-	NODE *p = L.pHead;
-	f = fopen(filename, "wb");
-	if(f == NULL){
-		printf("Loi khong mo duoc tap tin.\n");
-		exit(0);
-	}
-	while(p != NULL){
-		fwrite(&p->sv, sizeof(SINHVIEN), 4, f);
-		p = p->pNext;
-	}
-	printf("Ghi thanh cong.\n");
-	fclose(f);
-}
-
-/*
-	Description: Doc thong tin sinh vien tu file ra mang
- 	Author: Nguyen Vo Hiep
-	Date: 29/09/2023
- */
-void DocFileRaMang(LIST &L1, char filename[]){
-	FILE *f;
-	SINHVIEN sv;
-	NODE *pAdd;
-	KhoiTao(L1);
-	f = fopen(filename, "r");
-	do{
-	    fread(&sv, sizeof(SINHVIEN), 4, f);
-	    pAdd = TaoSV(sv);
-	    if(pAdd == NULL)
-	    	return ;
-	    ThemCuoi(L1, pAdd);
-	}while(pAdd != NULL); 
-    	printf("Doc thanh cong.\n");
-    	fclose(f);
 }
