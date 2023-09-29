@@ -1,8 +1,5 @@
 /*
-	Copyright: IUH
-	Author: 
-	Date: 
-	Description: Quan ly thong tin sinh vien cua 1 lop hoc bang single linked-list
+	BAI TAP QUAN LY THONG TIN SINH VIEN SU DUNG LINKED LIST DON
 */
 
 #include <stdio.h>
@@ -57,7 +54,8 @@ int CapNhatDiemTB(LIST L, char MSSV[]);				//Cap nhat diem trung binh cua mot si
 void XepLoai(SINHVIEN &sv);					//Xep loai hoc luc sinh vien thong qua diem trung binh
 void ThongKeTheoDTB(LIST L);					//Thong ke so luong sinh vien theo diem trung binh
 NODE *TimSV(LIST L, char MSSV[]);				//Tra ve sinh vien can tim theo ma so cho truoc (neu co)
-void Swap(SINHVIEN &sv1, SINHVIEN &sv2);			//Hoan doi vi tri cua 2 sinh vien trong danh sach
+void Swap(SINHVIEN &sv1, SINHVIEN &sv2);		//Hoan doi vi tri cua 2 sinh vien trong danh sach
+char get1stLetterOfName(SINHVIEN sv);			//Lay ki tu dau tien cua ten sinh vien
 void SapXepTheoTen(LIST &L);					//Sap xep danh sach sinh vien theo ten
 void GhiDanhSachVaoFile(LIST L, char filename[]);		//Ghi danh sach sinh vien va file
 void DocFileRaMang(LIST &L1, char filename[]);			//Doc thong tin sinh vien tu file ra mang
@@ -77,18 +75,18 @@ int menu() {
 		printf("9. Thong ke so luong sinh vien theo diem trung binh\n");
 		printf("10. Ghi danh sach sinh vien vao file\n");
 		printf("11. Doc danh sach sinh vien trong file ra mang\n");
-		printf("12. Thoat chuong trinh\n");
+		printf("0. Thoat chuong trinh\n");
 		for(int i = 0; i < 108; i++) {
 			printf("=");
 		}
 		printf("\nNhap lua chon cua ban: ");
 		scanf("%d", &choice);
-		if(choice < 1 || choice > 12) {
+		if(choice < 0 || choice > 11) {
 			printf("Lua chon khong hop le. Vui long nhap lai!\n");
 		} 
-	} while(choice < 1 || choice > 12);
+	} while(choice < 0 || choice > 12);
 
-	if(choice == 12) {
+	if(choice == 0) {
 		printf("Chuong trinh ket thuc\n");
 		exit(0);
 	}
@@ -226,8 +224,8 @@ int main(){
 
 /*
 	Description: Nhap thong tin 1 sinh vien
- 	Author:
-	Date:
+ 	Author: Nguyen Gia Hao
+	Date: 28/09/2023
  */
 void Nhap1SV(SINHVIEN &sv){
 	fflush(stdin);
@@ -253,8 +251,8 @@ void Nhap1SV(SINHVIEN &sv){
 
 /*
 	Description: Kiem tra tinh hop le cua ngay sinh
- 	Author:
-	Date:
+ 	Author: Nguyen Gia Hao
+	Date: 28/09/2023
  */
 bool KiemTraNgaySinh(SINHVIEN sv){
 	if(sv.ngaysinh.ngay == NULL || sv.ngaysinh.thang == NULL || sv.ngaysinh.nam == NULL){
@@ -295,8 +293,8 @@ bool KiemTraNgaySinh(SINHVIEN sv){
 
 /*
 	Description: Khoi tao danh sach chua thong tin cac sinh vien
- 	Author:
-	Date:
+ 	Author: Nguyen Vo Hiep
+	Date: 28/09/2023
  */
 void KhoiTao(LIST &L){
 	L.pHead = L.pTail = NULL;
@@ -304,8 +302,8 @@ void KhoiTao(LIST &L){
 
 /*
 	Description: Tao node chua thong tin 1 sinh vien
- 	Author:
-	Date:
+ 	Author: Nguyen Vo Hiep
+	Date: 28/09/2023
  */
 NODE *TaoSV(SINHVIEN SV){
 	NODE *p = new NODE;
@@ -320,8 +318,8 @@ NODE *TaoSV(SINHVIEN SV){
 
 /*
 	Description: Them 1 sinh vien vao dau danh sach
- 	Author:
-	Date:
+ 	Author: Nguyen Vo Hiep
+	Date: 28/09/2023
  */
 void ThemDau(LIST &L, NODE *p){
 	if(L.pHead==NULL)
@@ -334,8 +332,8 @@ void ThemDau(LIST &L, NODE *p){
 
 /*
 	Description: Them 1 sinh vien vao cuoi danh sach
- 	Author:
-	Date:
+ 	Author: Nguyen Vo Hiep
+	Date: 28/09/2023
  */
 void ThemCuoi(LIST &L, NODE *p){
 	if(L.pHead==NULL)
@@ -348,8 +346,8 @@ void ThemCuoi(LIST &L, NODE *p){
 
 /*
 	Description: Nhap vao danh sach thong tin cac sinh vien
- 	Author:
-	Date:
+ 	Author: Nguyen Gia Hao
+	Date: 28/09/2023
  */
 void NhapDanhSach(LIST &L){
 	int n;
@@ -364,6 +362,7 @@ void NhapDanhSach(LIST &L){
 	int i=0;
 	while(i < n){
 		do{
+			printf("\nNHAP THONG TIN SINH VIEN THU %d\n", i+1);
 			Nhap1SV(SV);
 			if(TimSV(L,SV.MSSV) != NULL)
 				printf("Ma sinh vien da ton tai. Vui long nhap lai!\n"); 
@@ -376,8 +375,8 @@ void NhapDanhSach(LIST &L){
 
 /*
 	Description: Them 1 sinh vien vao danh sach
- 	Author:
-	Date:
+ 	Author: Nguyen Gia Hao
+	Date: 28/09/2023
  */
 void ThemSV(LIST &L){
 	SINHVIEN SV;
@@ -393,8 +392,8 @@ void ThemSV(LIST &L){
 
 /*
 	Description: Cap nhat thong tin sinh vien bang ma so sinh vien cho truoc
- 	Author:
-	Date:
+ 	Author: Nguyen Vo Hiep
+	Date: 28/09/2023
  */
 bool CapNhatSV(LIST L, char MSSV[]){
 	NODE *p = TimSV(L, MSSV);
@@ -424,19 +423,21 @@ bool CapNhatSV(LIST L, char MSSV[]){
 
 /*
 	Description: Xuat thong tin 1 sinh vien
- 	Author:
-	Date:
+ 	Author: Nguyen Gia Hao
+	Date: 28/09/2023
  */
 void Xuat1SV(SINHVIEN sv){
 	SpecName(sv.hoten);
 	SpecName(sv.diachi);
-	printf("|%-10s|%-30s|%-10s|%2d/%2d/%4d|%-20s|%15.2f|%10s|\n", sv.MSSV, sv.hoten, sv.gioitinh == 1?"Nu":"Nam", sv.ngaysinh.ngay, sv.ngaysinh.thang, sv.ngaysinh.nam, sv.diachi, sv.dtb, sv.xeploai);
+	printf("|%-10s|%-30s|%-10s|%2d/%2d/%4d|%-20s|%15.2f|%10s|\n", 
+			sv.MSSV, sv.hoten, sv.gioitinh == 1?"Nu":"Nam", sv.ngaysinh.ngay, 
+			sv.ngaysinh.thang, sv.ngaysinh.nam, sv.diachi, sv.dtb, sv.xeploai);
 }
 
 /*
 	Description: Xuat danh sach cac sinh vien
- 	Author:
-	Date:
+ 	Author: Nguyen Gia Hao
+	Date: 28/09/2023
  */
 void XuatDanhSach(LIST L){
 	NODE *p = L.pHead;
@@ -444,7 +445,9 @@ void XuatDanhSach(LIST L){
 		printf("Mang khong co sinh vien nao.\n");
 		exit(0);
 	}
-	printf("|%5s|%-10s|%-30s|%-10s|%10s|%-20s|%15s|%10s|\n", "STT", "MSSV", "Ho Ten", "Gioi Tinh", "Ngay Sinh", "Dia Chi", "Diem Trung Binh", "Xep Loai");
+	printf("|%5s|%-10s|%-30s|%-10s|%10s|%-20s|%15s|%10s|\n", 
+			"STT", "MSSV", "Ho Ten", "Gioi Tinh", "Ngay Sinh", 
+			"Dia Chi", "Diem Trung Binh", "Xep Loai");
 	int i=1;
 	while(p != NULL){
 		printf("|%5d", i);
@@ -457,8 +460,8 @@ void XuatDanhSach(LIST L){
 
 /*
 	Description: Dinh dang ten dac biet, dia chi
- 	Author:
-	Date:
+ 	Author: Nguyen Gia Hao
+	Date: 28/09/2023
  */
 void SpecName(char ch[]){
 	strlwr(ch);
@@ -474,8 +477,8 @@ void SpecName(char ch[]){
 
 /*
 	Description: Xoa sinh vien voi ma sinh vien cho truoc khoi danh sach
- 	Author:
-	Date:
+ 	Author: Nguyen Vo Hiep
+	Date: 29/09/2023
  */
 int XoaSV(LIST &L, char MSSV[]){
 	NODE *pDel = L.pHead;
@@ -514,8 +517,8 @@ int XoaSV(LIST &L, char MSSV[]){
 
 /*
 	Description: Sap xep danh sach theo diem trung binh tang
- 	Author:
-	Date:
+ 	Author: Nguyen Vo Hiep
+	Date: 29/09/2023
  */
 void SapTheoDTBtang(LIST &L){
 	NODE *p = L.pHead;
@@ -538,8 +541,8 @@ void SapTheoDTBtang(LIST &L){
 
 /*
 	Description: Liet ke cac sinh vien co diem trung binh lon hon 5
- 	Author:
-	Date:
+ 	Author: Nguyen Vo Hiep
+	Date: 29/09/2023
  */
 void LietKeSV(LIST L){
 	NODE *p = L.pHead;
@@ -562,8 +565,8 @@ void LietKeSV(LIST L){
 
 /*
 	Description: Tra ve so luong sinh vien nam trong danh sach
- 	Author:
-	Date:
+ 	Author: Nguyen Hoang Khai
+	Date: 29/09/2023
  */
 int DemSLNam(LIST L){
 	NODE *p = L.pHead;
@@ -582,8 +585,8 @@ int DemSLNam(LIST L){
 
 /*
 	Description: Tra ve so luong sinh vien nu trong danh sach
- 	Author:
-	Date:
+ 	Author: Nguyen Hoang Khai
+	Date: 29/09/2023
  */
 int DemSLNu(LIST L){
 	NODE *p = L.pHead;
@@ -602,8 +605,8 @@ int DemSLNu(LIST L){
 
 /*
 	Description: Cap nhat diem trung binh cua mot sinh vien thong qua MSSV(neu co)
- 	Author:
-	Date:
+ 	Author: Nguyen Vo Hiep
+	Date: 29/09/2023
  */
 int CapNhatDiemTB(LIST L, char MSSV[]){
 	NODE *p = L.pHead;
@@ -628,8 +631,8 @@ int CapNhatDiemTB(LIST L, char MSSV[]){
 
 /*
 	Description: Xep loai hoc luc sinh vien thong qua diem trung binh
- 	Author:
-	Date:
+ 	Author: Nguyen Hoang Khai
+	Date: 29/09/2023
  */
 void XepLoai(SINHVIEN &sv) {
 	if(sv.dtb >= 9)
@@ -646,8 +649,8 @@ void XepLoai(SINHVIEN &sv) {
 
 /*
 	Description: Thong ke so luong sinh vien theo diem trung binh xep loai hoc luc 
- 	Author:
-	Date:
+ 	Author: Nguyen Hoang Khai
+	Date: 29/09/2023
  */
 void ThongKeTheoDTB(LIST L) {
 	NODE *p = L.pHead;
@@ -675,8 +678,8 @@ void ThongKeTheoDTB(LIST L) {
 
 /*
 	Description: Tra ve sinh vien co diem trung binh cao nhat trong danh sach
- 	Author:
-	Date:
+ 	Author: Nguyen Vo Hiep
+	Date: 29/09/2023
  */
 NODE *SinhVienCoDTBCaoNhat(LIST L){
 	NODE *max = L.pHead;
@@ -691,8 +694,8 @@ NODE *SinhVienCoDTBCaoNhat(LIST L){
 
 /*
 	Description: Tra ve sinh vien theo ma so cho truoc (neu co) trong danh sach
- 	Author:
-	Date:
+ 	Author: Nguyen Hoang Khai
+	Date: 29/09/2023
  */
 NODE *TimSV(LIST L, char MSSV[]) {
   NODE *p = L.pHead;
@@ -707,8 +710,8 @@ NODE *TimSV(LIST L, char MSSV[]) {
 
 /*
 	Description: Hoan doi vi tri cua 2 sinh vien trong danh sach
- 	Author:
-	Date:
+ 	Author: Nguyen Vo Hiep
+	Date: 29/09/2023
  */
 void Swap(SINHVIEN &sv1, SINHVIEN &sv2) {
   SINHVIEN temp = sv1;
@@ -717,9 +720,25 @@ void Swap(SINHVIEN &sv1, SINHVIEN &sv2) {
 }
 
 /*
+	Description: Ham lay chu cai dau tien trong ten cua chuoi ho ten sinh vien 
+	Author: Nguyen Hoang Khai 
+	Date: 08/09/2023 
+*/
+char get1stLetterOfName(SINHVIEN sv) { //hàm dùng để lấy chữ cái đầu tiên của tên để sắp xếp
+    char c;
+    int n = strlen(sv.hoten);
+    for(int i = n-2; i >= 0; i--) { //bắt đầu từ vị trí cuối cùng của tên
+        if(sv.hoten[i] == ' ') { // nếu gặp khoảng trắng thì lấy chữ cái đầu tiên bên phải khoảng trắng
+            c = sv.hoten[i+1];
+            return c;
+        }
+    }
+}
+
+/*
 	Description: Sap xep danh sach sinh vien theo ten (A-Z)
- 	Author:
-	Date:
+ 	Author: Nguyen Hoang Khai
+	Date: 29/09/2023
  */
 void SapXepTheoTen(LIST &L) {
 	NODE *p = L.pHead;
@@ -730,8 +749,13 @@ void SapXepTheoTen(LIST &L) {
 	}
 	while(p != NULL){
 		for(NODE *P = p->pNext;P!= NULL; P = P->pNext){
-			if(stricmp(p->sv.hoten, P->sv.hoten) > 0){
+			if(get1stLetterOfName(p->sv) > get1stLetterOfName(P->sv)){
 				Swap(p->sv, P->sv);
+			}
+			if(get1stLetterOfName(p->sv) == get1stLetterOfName(P->sv)) {
+				if(stricmp(p->sv.hoten, P->sv.hoten) > 0) {
+					Swap(p->sv, P->sv);
+				}
 			}
 		}
 		p = p->pNext;
@@ -740,8 +764,8 @@ void SapXepTheoTen(LIST &L) {
 
 /*
 	Description: Ghi danh sach sinh vien vao file
-	Author:
-	Date:
+	Author: Nguyen Vo Hiep
+	Date: 29/09/2023
 */
 void GhiDanhSachVaoFile(LIST L, char filename[]){
 	FILE *f;
@@ -761,8 +785,8 @@ void GhiDanhSachVaoFile(LIST L, char filename[]){
 
 /*
 	Description: Doc thong tin sinh vien tu file ra mang
- 	Author:
-	Date:
+ 	Author: Nguyen Vo Hiep
+	Date: 29/09/2023
  */
 void DocFileRaMang(LIST &L1, char filename[]){
 	FILE *f;
