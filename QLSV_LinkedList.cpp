@@ -1,9 +1,8 @@
 /*
-	Name: Quan ly sinh vien by single linked list
 	Copyright: IUH
 	Author: 
 	Date: 
-	Description: Quan ly thong tin sinh vien cua 1 lop hoc
+	Description: Quan ly thong tin sinh vien cua 1 lop hoc bang single linked-list
 */
 
 #include <stdio.h>
@@ -36,32 +35,32 @@ typedef struct lsv{
 	NODE *pHead, *pTail;
 }LIST;
 
-void KhoiTao(LIST &L);							//Khoi tao danh sach chua thong tin sinh vien 1 lop hoc
+void KhoiTao(LIST &L);						//Khoi tao danh sach chua thong tin sinh vien 1 lop hoc
 void ThemDau(LIST &L, NODE *p);					//Them 1 node vao dau danh sach
 void ThemCuoi(LIST &L, NODE *p);				//Them 1 node vao cuoi danh sach
-NODE *TaoSV(SINHVIEN SV);						//Tao node chua thong tin 1 sinh vien
+NODE *TaoSV(SINHVIEN SV);					//Tao node chua thong tin 1 sinh vien
 void Nhap1SV(SINHVIEN &sv); 					//Nhap thong tin 1 sinh vien
 bool KiemTraNgaySinh(SINHVIEN sv);				//Kiem tra tinh hop le cua ngay sinh
 void NhapDanhSach(LIST &L); 					//Nhap danh sach sinh vien
-void ThemSV(LIST &L);							//Them 1 sinh vien vao danh sach
-bool CapNhatSV(LIST L, char MSSV[]); 
-void Xuat1SV(SINHVIEN sv); 						//Xuat thong tin 1 sinh vien
-void XuatDanhSach(LIST L);						//Xuat danh sach sinh vien
-void SpecName(char ch[]);						//Dinh dang ten nguoi, tinh thanh
-int XoaSV(LIST &L, char MSSV[]);				//Xoa sinh vien voi MSSV cho truoc khoi danh sach
+void ThemSV(LIST &L);						//Them 1 sinh vien vao danh sach
+bool CapNhatSV(LIST L, char MSSV[]); 				//Cap nhat thong tin sinh vien bang ma so sinh vien cho truoc
+void Xuat1SV(SINHVIEN sv); 					//Xuat thong tin 1 sinh vien
+void XuatDanhSach(LIST L);					//Xuat danh sach sinh vien
+void SpecName(char ch[]);					//Dinh dang ten nguoi, tinh thanh
+int XoaSV(LIST &L, char MSSV[]);				//Xoa sinh vien voi MSSV cho truoc (neu co) khoi danh sach
 void SapTheoDTBtang(LIST &L);					//Sap xep danh sach theo dtb tang
-void LietKeSV(LIST L);							//Liet ke cac sinh vien co diem trung binh >=5
-int DemSLNam(LIST L);							//Dem so luong sinh vien nam
-int DemSLNu(LIST L);
-int CapNhatDiemTB(LIST L, char MSSV[]);			//Cap nhat diem trung binh cua mot sinh vien thong qua MSSV
-void XepLoai(SINHVIEN &sv);
-void ThongKeTheoDTB(LIST L);
-NODE *SinhVienCoDTBCaoNhat(LIST L);
-NODE *TimSV(LIST L, char MSSV[]);
-void Swap(SINHVIEN &sv1, SINHVIEN &sv2);
-void SapXepTheoTen(LIST &L);
-void GhiDanhSachVaoFile(LIST L, char filename[]);
-void DocFileRaMang(LIST &L1, char filename[]);
+void LietKeSV(LIST L);						//Liet ke cac sinh vien co diem trung binh >=5
+int DemSLNam(LIST L);						//Dem so luong sinh vien nam
+int DemSLNu(LIST L);						//Dem so luong sinh vien nu
+NODE *SinhVienCoDTBCaoNhat(LIST L);				//Tra ve sinh vien co diem trung binh cao nhat trong danh sach
+int CapNhatDiemTB(LIST L, char MSSV[]);				//Cap nhat diem trung binh cua mot sinh vien thong qua MSSV (neu co)
+void XepLoai(SINHVIEN &sv);					//Xep loai hoc luc sinh vien thong qua diem trung binh
+void ThongKeTheoDTB(LIST L);					//Thong ke so luong sinh vien theo diem trung binh
+NODE *TimSV(LIST L, char MSSV[]);				//Tra ve sinh vien can tim theo ma so cho truoc (neu co)
+void Swap(SINHVIEN &sv1, SINHVIEN &sv2);			//Hoan doi vi tri cua 2 sinh vien trong danh sach
+void SapXepTheoTen(LIST &L);					//Sap xep danh sach sinh vien theo ten
+void GhiDanhSachVaoFile(LIST L, char filename[]);		//Ghi danh sach sinh vien va file
+void DocFileRaMang(LIST &L1, char filename[]);			//Doc thong tin sinh vien tu file ra mang
 
 int menu() {
 	int choice;
@@ -225,8 +224,11 @@ int main(){
 	}
 }
 
-
-//Nhap thong tin 1 sinh vien
+/*
+	Description: Nhap thong tin 1 sinh vien
+ 	Author:
+	Date:
+ */
 void Nhap1SV(SINHVIEN &sv){
 	fflush(stdin);
 	printf("Nhap ma so sinh vien: ");gets(sv.MSSV);
@@ -249,6 +251,11 @@ void Nhap1SV(SINHVIEN &sv){
 	XepLoai(sv);
 }
 
+/*
+	Description: Kiem tra tinh hop le cua ngay sinh
+ 	Author:
+	Date:
+ */
 bool KiemTraNgaySinh(SINHVIEN sv){
 	if(sv.ngaysinh.ngay == NULL || sv.ngaysinh.thang == NULL || sv.ngaysinh.nam == NULL){
 		printf("=>Ngay, thang hoac nam khong duoc de trong! Nhap lai.\n"); 
@@ -286,12 +293,20 @@ bool KiemTraNgaySinh(SINHVIEN sv){
 	return true;
 }
 
-//Khoi tao danh sach chua thong tin sinh vien 1 lop hoc
+/*
+	Description: Khoi tao danh sach chua thong tin cac sinh vien
+ 	Author:
+	Date:
+ */
 void KhoiTao(LIST &L){
 	L.pHead = L.pTail = NULL;
 }
 
-//Tao 1 node chua thong tin 1 sinh vien
+/*
+	Description: Tao node chua thong tin 1 sinh vien
+ 	Author:
+	Date:
+ */
 NODE *TaoSV(SINHVIEN SV){
 	NODE *p = new NODE;
 	if(p == NULL){
@@ -303,7 +318,11 @@ NODE *TaoSV(SINHVIEN SV){
 	return p;
 }
 
-//Them 1 node vao dau danh sach
+/*
+	Description: Them 1 sinh vien vao dau danh sach
+ 	Author:
+	Date:
+ */
 void ThemDau(LIST &L, NODE *p){
 	if(L.pHead==NULL)
 		L.pHead=L.pTail=p;
@@ -313,7 +332,11 @@ void ThemDau(LIST &L, NODE *p){
 	}
 }
 
-//Them 1 node vao cuoi danh sach
+/*
+	Description: Them 1 sinh vien vao cuoi danh sach
+ 	Author:
+	Date:
+ */
 void ThemCuoi(LIST &L, NODE *p){
 	if(L.pHead==NULL)
 		L.pHead=L.pTail=p;
@@ -323,7 +346,11 @@ void ThemCuoi(LIST &L, NODE *p){
 	}
 }
 
-//Nhap vao danh sach sinh vien
+/*
+	Description: Nhap vao danh sach thong tin cac sinh vien
+ 	Author:
+	Date:
+ */
 void NhapDanhSach(LIST &L){
 	int n;
 	SINHVIEN SV;
@@ -347,7 +374,11 @@ void NhapDanhSach(LIST &L){
 	}
 }
 
-//Them 1 sinh vien vao danh sach
+/*
+	Description: Them 1 sinh vien vao danh sach
+ 	Author:
+	Date:
+ */
 void ThemSV(LIST &L){
 	SINHVIEN SV;
 	NODE *p;
@@ -360,6 +391,11 @@ void ThemSV(LIST &L){
 	ThemCuoi(L, p);
 }
 
+/*
+	Description: Cap nhat thong tin sinh vien bang ma so sinh vien cho truoc
+ 	Author:
+	Date:
+ */
 bool CapNhatSV(LIST L, char MSSV[]){
 	NODE *p = TimSV(L, MSSV);
 	if(p == NULL)
@@ -386,14 +422,22 @@ bool CapNhatSV(LIST L, char MSSV[]){
 	
 }
 
-//Xuat thong tin 1 sinh vien
+/*
+	Description: Xuat thong tin 1 sinh vien
+ 	Author:
+	Date:
+ */
 void Xuat1SV(SINHVIEN sv){
 	SpecName(sv.hoten);
 	SpecName(sv.diachi);
 	printf("|%-10s|%-30s|%-10s|%2d/%2d/%4d|%-20s|%15.2f|%10s|\n", sv.MSSV, sv.hoten, sv.gioitinh == 1?"Nu":"Nam", sv.ngaysinh.ngay, sv.ngaysinh.thang, sv.ngaysinh.nam, sv.diachi, sv.dtb, sv.xeploai);
 }
 
-//Xuat danh sach sinh vien
+/*
+	Description: Xuat danh sach cac sinh vien
+ 	Author:
+	Date:
+ */
 void XuatDanhSach(LIST L){
 	NODE *p = L.pHead;
 	if(p == NULL){
@@ -411,7 +455,11 @@ void XuatDanhSach(LIST L){
 
 }
 
-//Dinh dang ho ten, tinh thanh
+/*
+	Description: Dinh dang ten dac biet, dia chi
+ 	Author:
+	Date:
+ */
 void SpecName(char ch[]){
 	strlwr(ch);
 	for(int i = 0;i < strlen(ch)-2; i++){
@@ -424,7 +472,11 @@ void SpecName(char ch[]){
 			ch[0] -=32;
 }
 
-//H?m x?a sinh vien theo MSSV
+/*
+	Description: Xoa sinh vien voi ma sinh vien cho truoc khoi danh sach
+ 	Author:
+	Date:
+ */
 int XoaSV(LIST &L, char MSSV[]){
 	NODE *pDel = L.pHead;
 	NODE *pPre = NULL;
@@ -460,7 +512,11 @@ int XoaSV(LIST &L, char MSSV[]){
 	return 0;
 }
 
-//Sap xep danh sach theo dtb tang
+/*
+	Description: Sap xep danh sach theo diem trung binh tang
+ 	Author:
+	Date:
+ */
 void SapTheoDTBtang(LIST &L){
 	NODE *p = L.pHead;
 	NODE *q = NULL;
@@ -480,7 +536,11 @@ void SapTheoDTBtang(LIST &L){
 	}
 }
 
-//Liet ke danh sach cac sinh vien co diem trung binh >=5
+/*
+	Description: Liet ke cac sinh vien co diem trung binh lon hon 5
+ 	Author:
+	Date:
+ */
 void LietKeSV(LIST L){
 	NODE *p = L.pHead;
 	if(p == NULL){
@@ -500,7 +560,11 @@ void LietKeSV(LIST L){
 	}
 }
 
-//Dem so luong sinh vien nam
+/*
+	Description: Tra ve so luong sinh vien nam trong danh sach
+ 	Author:
+	Date:
+ */
 int DemSLNam(LIST L){
 	NODE *p = L.pHead;
 	if(p == NULL){
@@ -516,7 +580,11 @@ int DemSLNam(LIST L){
 	return dem;
 }
 
-//Dem so luong sinh vien nu
+/*
+	Description: Tra ve so luong sinh vien nu trong danh sach
+ 	Author:
+	Date:
+ */
 int DemSLNu(LIST L){
 	NODE *p = L.pHead;
 	if(p == NULL){
@@ -532,7 +600,11 @@ int DemSLNu(LIST L){
 	return dem;
 }
 
-//Cap nhat diem trung binh theo MSSV
+/*
+	Description: Cap nhat diem trung binh cua mot sinh vien thong qua MSSV(neu co)
+ 	Author:
+	Date:
+ */
 int CapNhatDiemTB(LIST L, char MSSV[]){
 	NODE *p = L.pHead;
 	if(p == NULL){
@@ -554,6 +626,11 @@ int CapNhatDiemTB(LIST L, char MSSV[]){
 	return 0;
 }
 
+/*
+	Description: Xep loai hoc luc sinh vien thong qua diem trung binh
+ 	Author:
+	Date:
+ */
 void XepLoai(SINHVIEN &sv) {
 	if(sv.dtb >= 9)
 		strcpy(sv.xeploai, "Xuat sac");
@@ -567,6 +644,11 @@ void XepLoai(SINHVIEN &sv) {
 		strcpy(sv.xeploai, "Yeu");
 }
 
+/*
+	Description: Thong ke so luong sinh vien theo diem trung binh xep loai hoc luc 
+ 	Author:
+	Date:
+ */
 void ThongKeTheoDTB(LIST L) {
 	NODE *p = L.pHead;
 	int xuatSacCount = 0, gioiCount = 0, khaCount = 0, trungBinhCount = 0, yeuCount = 0;
@@ -591,6 +673,11 @@ void ThongKeTheoDTB(LIST L) {
 	printf("So luong sinh vien yeu: %d\n", yeuCount);
 }
 
+/*
+	Description: Tra ve sinh vien co diem trung binh cao nhat trong danh sach
+ 	Author:
+	Date:
+ */
 NODE *SinhVienCoDTBCaoNhat(LIST L){
 	NODE *max = L.pHead;
 	NODE *p = max->pNext;
@@ -602,6 +689,11 @@ NODE *SinhVienCoDTBCaoNhat(LIST L){
 	return max;
 }
 
+/*
+	Description: Tra ve sinh vien theo ma so cho truoc (neu co) trong danh sach
+ 	Author:
+	Date:
+ */
 NODE *TimSV(LIST L, char MSSV[]) {
   NODE *p = L.pHead;
   while(p != NULL) {
@@ -613,12 +705,22 @@ NODE *TimSV(LIST L, char MSSV[]) {
   return NULL;
 }
 
+/*
+	Description: Hoan doi vi tri cua 2 sinh vien trong danh sach
+ 	Author:
+	Date:
+ */
 void Swap(SINHVIEN &sv1, SINHVIEN &sv2) {
   SINHVIEN temp = sv1;
   sv1 = sv2;
   sv2 = temp;
 }
 
+/*
+	Description: Sap xep danh sach sinh vien theo ten (A-Z)
+ 	Author:
+	Date:
+ */
 void SapXepTheoTen(LIST &L) {
 	NODE *p = L.pHead;
 	NODE *q = NULL;
@@ -636,6 +738,11 @@ void SapXepTheoTen(LIST &L) {
 	}
 }
 
+/*
+	Description: Ghi danh sach sinh vien vao file
+	Author:
+	Date:
+*/
 void GhiDanhSachVaoFile(LIST L, char filename[]){
 	FILE *f;
 	NODE *p = L.pHead;
@@ -652,6 +759,11 @@ void GhiDanhSachVaoFile(LIST L, char filename[]){
 	fclose(f);
 }
 
+/*
+	Description: Doc thong tin sinh vien tu file ra mang
+ 	Author:
+	Date:
+ */
 void DocFileRaMang(LIST &L1, char filename[]){
 	FILE *f;
 	SINHVIEN sv;
@@ -665,6 +777,6 @@ void DocFileRaMang(LIST &L1, char filename[]){
 	    	return ;
 	    ThemCuoi(L1, pAdd);
 	}while(pAdd != NULL); 
-    printf("Doc thanh cong.\n");
-    fclose(f);
+    	printf("Doc thanh cong.\n");
+    	fclose(f);
 }
